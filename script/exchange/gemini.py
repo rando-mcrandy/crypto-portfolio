@@ -11,13 +11,20 @@ class GeminiApi:
     https://docs.gemini.com/rest-api/
     '''
 
-    def __init__(self):
-        self._gemini_api_key = ""
-        self._gemini_api_secret = "".encode()
+    def __init__(self, api_key, api_secret):
+        '''
+        Init API credentials and nounce format
+        '''
+        self._gemini_api_key = api_key
+        self._gemini_api_secret = api_secret.encode()
         t = datetime.datetime.now()
         self.payload_nonce = int(time.mktime(t.timetuple())*1000)
 
     def run(self):
+        '''
+        Execute retrieval of balances. 
+        Gemini has both a "regular" and "earn" profile. Must gather separately.
+        '''
         balances = self._get_balances()
         earn_balances = self._get_earn_balances()
         print(f"balances\n{balances}")
@@ -34,6 +41,10 @@ class GeminiApi:
         return self._send_request(url, request).json()
         
     def _send_request(self, url, request):
+        '''
+        Send rest-api call.
+        Returns response.
+        '''
         payload =  {"request": request, "nonce": str(self.payload_nonce)}
         self.payload_nonce += 1
         encoded_payload = json.dumps(payload).encode()
