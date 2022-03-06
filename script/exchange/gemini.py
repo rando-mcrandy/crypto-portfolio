@@ -43,8 +43,8 @@ class GeminiApi:
         
         for b in balances:
             if b['currency'] not in total_balances:
-                total_balances[b['currency']] = {'amount': 0.0, 'source': 'Gemini'}
-            total_balances[b['currency']]['amount'] += float(b['amount'])
+                total_balances[b['currency'].upper()] = {'amount': 0.0, 'source': 'Gemini'}
+            total_balances[b['currency'].upper()]['amount'] += float(b['amount'])
 
         for b in earn_balances:
             if b['currency'] not in total_balances:

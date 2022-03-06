@@ -41,7 +41,7 @@ class BinanceUSApi:
         for b in unformated_balances:
             amount = float(b['free']) + float(b['locked'])
             if amount > 0.0:
-                balances[b['asset']] = {'amount': amount, 'source': 'BinanceUS'}
+                balances[b['asset'].upper()] = {'amount': amount, 'source': 'BinanceUS'}
         
         return balances
 
