@@ -45,7 +45,7 @@ class CoinData:
     def get_price_data(self, symbols):
         vs_currencies='usd'
         # get price data (passed in symbols, need ids)
-        prices = self.cg.get_price(ids=[self.symbol_to_id[symbol] for symbol in symbols], vs_currencies=vs_currencies)
+        prices = self.cg.get_price(ids=[self.symbol_to_id[symbol] for symbol in symbols if symbol in self.symbol_to_id], vs_currencies=vs_currencies)
         # reformat returned price data (need symbols)
         prices = {self.id_to_symbol_name[k]['symbol']: v[vs_currencies] for k, v in prices.items()}
 
@@ -55,7 +55,7 @@ class CoinData:
         return prices
 
     def get_names(self, symbols):
-        names = {symbol: self.id_to_symbol_name[self.symbol_to_id[symbol]]['name'] for symbol in symbols}
+        names = {symbol: self.id_to_symbol_name[self.symbol_to_id[symbol]]['name'] if symbol in self.symbol_to_id else symbol for symbol in symbols}
         if 'USD' in names:
             names['USD'] = 'US Dollar'
         return names

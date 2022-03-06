@@ -4,6 +4,7 @@ import hmac
 import requests
 import time
 import json
+from ..util import balances_dict_to_df
 
 class BinanceUSApi:
     '''
@@ -19,11 +20,10 @@ class BinanceUSApi:
         '''
         Execute retrieval of balances. 
 
-        Return Example:
-        {
-            'ETH' : {'amount': 4.2315164152', 'source': 'BinanceUS'},
-            'BTC' : {'amount': 0.5423431145', 'source': 'BinanceUS'}
-        }
+        Return Example (dataframe):
+          asset        amount     source
+        0   BTC  5.4545454545     BinanceUS
+        1   ADA  44254.003133     BinanceUS
         '''
         return self._get_balances()
         
@@ -43,7 +43,7 @@ class BinanceUSApi:
             if amount > 0.0:
                 balances[b['asset'].upper()] = {'amount': amount, 'source': 'BinanceUS'}
         
-        return balances
+        return balances_dict_to_df(balances)
 
     def _get_binanceus_signature(self, data, secret):
         '''

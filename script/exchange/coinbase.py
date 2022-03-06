@@ -1,4 +1,5 @@
 from coinbase.wallet.client import Client
+from ..util import balances_dict_to_df
 
 class CoinbaseApi:
     '''
@@ -15,11 +16,10 @@ class CoinbaseApi:
         '''
         Execute retrieval of balances. 
 
-        Return Example:
-        {
-            'ETH' : {'amount': 4.2315164152', 'source': 'BinanceUS'},
-            'BTC' : {'amount': 0.5423431145', 'source': 'BinanceUS'}
-        }
+        Return Example (dataframe):
+          asset        amount     source
+        0   BNB  5.4545454545   Coinbase
+        1  USDC  44254.003133   Coinbase
         '''
         return self._get_balances()
 
@@ -43,7 +43,7 @@ class CoinbaseApi:
             if amount > 0.0:
                 balances[asset] = {'amount': amount, 'source': 'coinbase'}
 
-        return balances
+        return balances_dict_to_df(balances)
         
 
         

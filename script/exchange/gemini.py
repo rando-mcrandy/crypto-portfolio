@@ -4,6 +4,7 @@ import base64
 import hmac
 import hashlib
 import datetime, time
+from ..util import balances_dict_to_df
 
 class GeminiApi:
     '''
@@ -25,11 +26,10 @@ class GeminiApi:
         Execute retrieval of balances. 
         Gemini has both a 'regular' and 'earn' profile. Must gather separately.
 
-        Return Example:
-        {
-            'ETH' : {'amount': 4.2315164152', 'source': 'Gemini'},
-            'GUSD' : {'amount': 100242.5425', 'source': 'Gemini'}
-        }
+        Return Example (dataframe):
+          asset        amount     source
+        0   BTC  5.4545454545     Gemini
+        1  GUSD  44254.003133     Gemini
         '''
         balances = self._get_balances()
         earn_balances = self._get_earn_balances()
@@ -51,7 +51,7 @@ class GeminiApi:
                 total_balances[b['currency']] = {'amount': 0.0, 'source': 'Gemini'}
             total_balances[b['currency']]['amount'] += float(b['balance'])
 
-        return total_balances
+        return balances_dict_to_df(total_balances)
         
     def _get_balances(self):
         url = 'https://api.gemini.com/v1/balances'
