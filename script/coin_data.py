@@ -35,6 +35,12 @@ class CoinData:
         if 'FIL' in self.symbol_to_id:
             self.symbol_to_id['FIL'] = 'filecoin'
             self.id_to_symbol_name['filecoin'] = {'symbol': 'FIL', 'name': 'Filecoin'}
+        if 'COMP' in self.symbol_to_id:
+            self.symbol_to_id['COMP'] = 'compound'
+            self.id_to_symbol_name['compound'] = {'symbol': 'COMP', 'name': 'Compound'}
+        if 'UNI' in self.symbol_to_id:
+            self.symbol_to_id['UNI'] = 'uniswap'
+            self.id_to_symbol_name['uniswap'] = {'symbol': 'UNI', 'name': 'Uniswap'}
 
     def get_price_data(self, symbols):
         vs_currencies='usd'
