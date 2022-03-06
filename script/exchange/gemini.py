@@ -24,6 +24,12 @@ class GeminiApi:
         '''
         Execute retrieval of balances. 
         Gemini has both a 'regular' and 'earn' profile. Must gather separately.
+
+        Return Example:
+        {
+            'ETH' : {'amount': 4.2315164152', 'source': 'Gemini'},
+            'GUSD' : {'amount': 100242.5425', 'source': 'Gemini'}
+        }
         '''
         balances = self._get_balances()
         earn_balances = self._get_earn_balances()
@@ -32,12 +38,6 @@ class GeminiApi:
     def _compute_total_balances(self, balances, earn_balances):
         '''
         Total up balances.
-        
-        Return Example:
-        {
-            'ETH' : {'amount': 4.2315164152', 'source': 'Gemini'},
-            'GUSD' : {'amount': 100242.5425', 'source': 'Gemini'}
-        }
         '''
         total_balances = {}
         
@@ -53,8 +53,6 @@ class GeminiApi:
 
         return total_balances
         
-    
-
     def _get_balances(self):
         url = 'https://api.gemini.com/v1/balances'
         request = '/v1/balances'
