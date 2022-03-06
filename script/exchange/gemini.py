@@ -55,20 +55,20 @@ class GeminiApi:
         
     def _get_balances(self):
         url = 'https://api.gemini.com/v1/balances'
-        request = '/v1/balances'
-        return self._send_request(url, request).json()
+        uri_path = '/v1/balances'
+        return self._send_request(url, uri_path).json()
 
     def _get_earn_balances(self):
         url = 'https://api.gemini.com/v1/balances/earn'
-        request = '/v1/balances/earn'
-        return self._send_request(url, request).json()
+        uri_path = '/v1/balances/earn'
+        return self._send_request(url, uri_path).json()
         
-    def _send_request(self, url, request):
+    def _send_request(self, url, uri_path):
         '''
         Send rest-api call.
         Returns response.
         '''
-        payload =  {'request': request, 'nonce': str(self.payload_nonce)}
+        payload =  {'request': uri_path, 'nonce': str(self.payload_nonce)}
         self.payload_nonce += 1
         encoded_payload = json.dumps(payload).encode()
         b64 = base64.b64encode(encoded_payload)
