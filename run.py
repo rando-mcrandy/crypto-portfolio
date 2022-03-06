@@ -5,9 +5,12 @@ from script.exchange.celsius import CelsiusApi
 from script.exchange.gemini import GeminiApi
 from script.exchange.coinbase import CoinbaseApi
 from script.wallet.bsc import BSCWallet
+from script.wallet.cardano import CardanoWallet
 from script.coin_data import CoinData
 import pandas as pd
 from script.util import prices_dict_to_df, names_dict_to_df
+pd.options.display.float_format = '{:,.6f}'.format
+
 
 load_dotenv()
 
@@ -19,8 +22,9 @@ def get_balances():
     binance_us_balances = BinanceUSApi(os.getenv('BINANCEUS_API_KEY'), os.getenv('BINANCEUS_API_SECRET')).run()
     coinbase_balances = CoinbaseApi(os.getenv('COINBASE_API_KEY'), os.getenv('COINBASE_API_SECRET')).run()
     bsc_balances = BSCWallet(os.getenv('BSC_WALLETS').split(';')).run()
+    cardano_balances = CardanoWallet(os.getenv('CARDANO_WALLETS').split(';')).run()
 
-    return pd.concat([gemini_balances, binance_us_balances, coinbase_balances, bsc_balances], ignore_index=True)
+    return pd.concat([gemini_balances, binance_us_balances, coinbase_balances, bsc_balances, cardano_balances], ignore_index=True)
 
 def get_price_data(coin_data, asset_symbols):
     '''
@@ -42,22 +46,22 @@ if __name__ == "__main__":
 
     # get price data
     coin_data = CoinData()
-    price_data = get_price_data(coin_data, total_balances['asset'])
-    names = get_names(coin_data, total_balances['asset'])
+    price_data = get_price_data(coin_data, total_balances['asset'].to_list())
+    names = get_names(coin_data, total_balances['asset'].to_list())
 
     # combine balances and price data
     df = pd.merge(total_balances, price_data, on='asset', how='left')
 
     # compute portfolio value
     df['value (usd)'] = df['amount'] * df['price (usd)']
-    df = pd.merge(df, names, on='asset')
 
     # compute totals
-    df_sum = df.groupby('name').sum().sort_values(by="value (usd)", ascending=False)
+    df_sum = df.groupby('asset').sum().drop(columns='price (usd)').sort_values(by="value (usd)", ascending=False)
+    df_sum = pd.merge(df_sum, price_data, on='asset', how='left')
+    df_sum = pd.merge(df_sum, names, on='asset', how='left')
+    df_sum = df_sum[['name', 'asset', 'price (usd)', 'amount', 'value (usd)']]
+    price_data.fillna(0)
+
     print(f"Total Value (USD): {df['value (usd)'].sum()}")
     print(df_sum)
  
-
-
-    
-
