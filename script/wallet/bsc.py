@@ -72,7 +72,6 @@ class BSCWallet:
             
             balances[asset] = {'amount': amount, 'source': 'BSC-' + wallet[-5:]}
         
-        # 0x230d1a067c7aabc77eec983c5169103d1a7722f5
         return balances_dict_to_df(balances)
 
     def _get_data(self, wallet):
