@@ -11,8 +11,7 @@ import pandas as pd
 
 class CardanoWallet:
     '''
-    Interact with BscScan using Selenium.
-    Need PRO API to get tokens... sad
+    Interact with CardanoScan using Selenium.
     '''
 
     def __init__(self, wallets):
