@@ -8,10 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from ..util import balances_dict_to_df
 import pandas as pd
 
-class BSCWallet:
+class PolygonWallet:
     '''
-    Interact with BscScan using Selenium.
-    Need PRO API to get tokens... sad
+    Interact with PolygonScan using Selenium.
     '''
 
     def __init__(self, wallets):
@@ -34,9 +33,9 @@ class BSCWallet:
         Execute retrieval of balances.
 
         Return Example (dataframe):
-          asset        amount     source
-        0   BNB  5.4545454545  BSC-722F5
-        1  USDC  44254.003133  BSC-722F5
+          asset        amount           source
+        0  POLY  5.4545454545    Polygon-722F5
+        1  USDC  44254.003133    Polygon-722F5
         '''
 
         combined_balances = None
@@ -65,17 +64,15 @@ class BSCWallet:
             # sometimes asset is too long, need to get it from the tooltip
             if '...' in asset:
                 asset = cols[2].find_element(By.TAG_NAME, 'span').get_attribute("data-original-title")
-            # sometimes asset has BSC- in front, need to get rid of it
-            if 'BSC-' in asset:
-                asset = asset.replace('BSC-', '')
+
             amount = float((cols[3].text).replace(',', ''))
             
-            balances[asset] = {'amount': amount, 'source': 'BSC-' + wallet[-5:]}
+            balances[asset] = {'amount': amount, 'source': 'Polygon-' + wallet[-5:]}
         
         return balances_dict_to_df(balances)
 
     def _get_data(self, wallet):
-        self._driver.get(f'https://bscscan.com/tokenholdings?a={wallet}')
+        self._driver.get(f'https://polygonscan.com/tokenholdings?a={wallet}')
         try:
             WebDriverWait(self._driver, 10).until(
                 EC.presence_of_element_located((By.ID, "td-0.1"))

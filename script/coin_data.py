@@ -71,7 +71,7 @@ class CoinData:
 
     def _filter_symbols(self, symbols):
         # TODO: Not supported symbols
-        NOT_SUPPORTED = {'MILK', 'PAVIA', 'sNMS'}
+        NOT_SUPPORTED = {'MILK', 'PAVIA', 'sNMS', 'MNEP', 'am3CRV-gauge', 't.me/maticroll', 'wPGX.app'}
         removed = set()
         for ns in NOT_SUPPORTED:
             if ns in symbols:
