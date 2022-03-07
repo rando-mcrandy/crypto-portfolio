@@ -18,13 +18,19 @@ def get_balances():
     '''
     Get balances from exchanges and wallets
     '''
-    gemini_balances = GeminiApi(os.getenv('GEMINI_API_KEY'), os.getenv('GEMINI_API_SECRET')).run()
-    binance_us_balances = BinanceUSApi(os.getenv('BINANCEUS_API_KEY'), os.getenv('BINANCEUS_API_SECRET')).run()
-    coinbase_balances = CoinbaseApi(os.getenv('COINBASE_API_KEY'), os.getenv('COINBASE_API_SECRET')).run()
-    bsc_balances = BSCWallet(os.getenv('BSC_WALLETS').split(';')).run()
-    cardano_balances = CardanoWallet(os.getenv('CARDANO_WALLETS').split(';')).run()
+    balances = []
+    if os.getenv('GEMINI_API_KEY') and os.getenv('GEMINI_API_SECRET'):
+        balances.append(GeminiApi(os.getenv('GEMINI_API_KEY'), os.getenv('GEMINI_API_SECRET')).run())
+    if os.getenv('BINANCEUS_API_KEY') and os.getenv('BINANCEUS_API_SECRET'):
+        balances.append(BinanceUSApi(os.getenv('BINANCEUS_API_KEY'), os.getenv('BINANCEUS_API_SECRET')).run())
+    if os.getenv('COINBASE_API_KEY') and os.getenv('COINBASE_API_SECRET'):
+        balances.append(CoinbaseApi(os.getenv('COINBASE_API_KEY'), os.getenv('COINBASE_API_SECRET')).run())
+    if os.getenv('BSC_WALLETS'):
+        balances.append(BSCWallet(os.getenv('BSC_WALLETS').split(';')).run())
+    if os.getenv('CARDANO_WALLETS'):
+        balances.append(CardanoWallet(os.getenv('CARDANO_WALLETS').split(';')).run())
 
-    return pd.concat([gemini_balances, binance_us_balances, coinbase_balances, bsc_balances, cardano_balances], ignore_index=True)
+    return pd.concat(balances, ignore_index=True)
 
 def get_price_data(coin_data, asset_symbols):
     '''
