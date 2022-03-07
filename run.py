@@ -30,7 +30,13 @@ def get_balances():
     if os.getenv('CARDANO_WALLETS'):
         balances.append(CardanoWallet(os.getenv('CARDANO_WALLETS').split(';')).run())
 
-    return pd.concat(balances, ignore_index=True)
+    if len(balances) == 0:
+        print('lmao no accounts, poor loser')
+        return None
+    elif len(balances) == 1:
+        return balances[0]
+    else:
+        return pd.concat(balances, ignore_index=True)
 
 def get_price_data(coin_data, asset_symbols):
     '''
