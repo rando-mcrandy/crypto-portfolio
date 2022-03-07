@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from script.exchange.binance_us import BinanceUSApi
-from script.exchange.celsius import CelsiusApi
+# from script.exchange.celsius import CelsiusApi
 from script.exchange.gemini import GeminiApi
 from script.exchange.coinbase import CoinbaseApi
 from script.wallet.bsc import BSCWallet
