@@ -78,10 +78,10 @@ class CardanoWallet:
 
             # go to address page to fetch ada amount and check if wallet has tokens
             ada_amount = WebDriverWait(self._driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, '//*[@id="addressDetailsPage"]/div/div/div[3]/div/div[2]/div[3]/div[2]/div[2]/span[1]/span'))
+                EC.presence_of_element_located((By.XPATH, '/html/body/div[2]/main/div/div/div[2]/div/div/div[3]/div/div[2]/div[3]/div[2]/div[2]/span[1]/span'))
             )
             has_tokens = "NO TOKENS" not in self._driver.find_element(By.XPATH, '//*[@id="addressDetailsPage"]/div/div/div[1]/div/div[3]/div').text
-            ada_amount = float(ada_amount.text.replace(',', ''))
+            ada_amount = float(ada_amount.text.replace(',', '')) 
             
             # fetch token amounts (if applicable)
             tokens_data = None
@@ -96,3 +96,4 @@ class CardanoWallet:
             
         except:
             print("Something went wrong in bscscan webdriverwait.")
+            return None, None

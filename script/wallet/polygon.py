@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from ..util import balances_dict_to_df
 import pandas as pd
+import undetected_chromedriver as uc
 
 class PolygonWallet:
     '''
@@ -17,12 +18,13 @@ class PolygonWallet:
         '''
         Init driver and wallets
         '''
-        s=Service(ChromeDriverManager().install())
-        options = Options()
-        options.headless = True
-        options.add_argument("--window-size=1920,1200")
-        options.add_experimental_option("excludeSwitches", ["enable-logging"])
-        self._driver = webdriver.Chrome(options=options, service=s)
+        Service(ChromeDriverManager().install())
+        # options = Options()
+        # options.headless = True
+        # options.add_argument("--window-size=1920,1200")
+        # options.add_experimental_option("excludeSwitches", ["enable-logging"])
+        # self._driver = webdriver.Chrome(options=options, service=s)
+        self._driver = uc.Chrome()
         self._wallets = wallets
 
     def __del__(self):
@@ -81,3 +83,4 @@ class PolygonWallet:
             
         except:
             print("Something went wrong in bscscan webdriverwait.")
+            return None

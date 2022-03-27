@@ -7,6 +7,7 @@ from script.exchange.coinbase import CoinbaseApi
 from script.wallet.bsc import BSCWallet
 from script.wallet.cardano import CardanoWallet
 from script.wallet.polygon import PolygonWallet
+from script.wallet.terra import TerraWallet
 from script.coin_data import CoinData
 import pandas as pd
 from script.util import prices_dict_to_df, names_dict_to_df
@@ -28,10 +29,13 @@ def get_balances():
         balances.append(CoinbaseApi(os.getenv('COINBASE_API_KEY'), os.getenv('COINBASE_API_SECRET')).run())
     if os.getenv('BSC_WALLETS'):
         balances.append(BSCWallet(os.getenv('BSC_WALLETS').split(';')).run())
-    if os.getenv('CARDANO_WALLETS'):
-        balances.append(CardanoWallet(os.getenv('CARDANO_WALLETS').split(';')).run())
     if os.getenv('POLYGON_WALLETS'):
         balances.append(PolygonWallet(os.getenv('POLYGON_WALLETS').split(';')).run())
+    if os.getenv('CARDANO_WALLETS'):
+        balances.append(CardanoWallet(os.getenv('CARDANO_WALLETS').split(';')).run())
+    if os.getenv('TERRA_WALLETS'):
+        balances.append(TerraWallet(os.getenv('TERRA_WALLETS').split(';')).run())
+    
 
     if len(balances) == 0:
         print('lmao no accounts, poor loser')
