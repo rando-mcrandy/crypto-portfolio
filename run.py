@@ -13,7 +13,6 @@ import pandas as pd
 from script.util import prices_dict_to_df, names_dict_to_df
 pd.options.display.float_format = '{:,.6f}'.format
 
-
 load_dotenv()
 
 def get_balances():
